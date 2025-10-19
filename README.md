@@ -1,28 +1,56 @@
 # Rails::Diff::Time
 
-TODO: Delete this and the text below, and describe your gem
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rails/diff/time`. To experiment with that code, run `bin/console` for an interactive prompt.
+A Rails helper gem to display time differences in a human-readable format.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Add this line to your application's Gemfile:
 
-Install the gem and add to the application's Gemfile by executing:
-
-```bash
-bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+```ruby
+gem 'rails-diff-time'
 ```
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+And then execute:
 
-```bash
-gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
-```
+    $ bundle install
+
+Or install it yourself as:
+
+    $ gem install rails-diff-time
 
 ## Usage
 
-TODO: Write usage instructions here
+In your Rails views, you can use the `diff_time` helper to display time differences:
+
+```erb
+<%= diff_time(Time.now + 3.days) %>
+# Output: <span>3 days later</span>
+
+<%= diff_time(Time.now - 2.hours) %>
+# Output: <span>2 hours ago</span>
+
+<%= diff_time(Time.now + 1.year + 2.months, "div", class: "time-diff") %>
+# Output: <div class="time-diff">1 year 2 months later</div>
+```
+
+### Parameters
+
+- `certain_time` (required): The time to compare with the current time
+- `element_name` (optional, default: "span"): The HTML element to wrap the output
+- `attributes` (optional, default: {}): HTML attributes to add to the element
+
+## Examples
+
+```erb
+# Simple usage
+<%= diff_time(user.created_at) %>
+
+# Custom element
+<%= diff_time(event.starts_at, "p") %>
+
+# With CSS classes
+<%= diff_time(post.published_at, "span", class: "text-muted", id: "post-time") %>
+```
 
 ## Development
 
@@ -32,8 +60,9 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rails-diff-time.
+Bug reports and pull requests are welcome on GitHub at https://github.com/dhq_boiler/rails-diff-time.
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+

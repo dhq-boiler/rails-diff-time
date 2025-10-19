@@ -1,15 +1,5 @@
 <%
-  diff_time = locals[:diff_time]
-  element_name = locals[:element_name] || {}
-  attributes = locals[:attributes] || {}
+  element_name ||= "span"
+  attributes ||= {}
 %>
-
-<% if element_name %>
-  <<%= element_name %> <%= attributes.map { |k, v| "#{k}='#{v}'" }.join(' ') %>>
-    <%= diff_time %>
-  </<%= element_name %>>
-<% else %>
-  <span <%= attributes.map { |k, v| "#{k}='#{v}'" }.join(' ') %>>
-    <%= diff_time %>
-  </span>
-<% end %>
+<%= content_tag(element_name.to_sym, diff_time, attributes) %>
