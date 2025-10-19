@@ -10,9 +10,6 @@ jobs:
   release:
     name: Release to RubyGems
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./rails-diff-time
 
     permissions:
       contents: write
@@ -21,12 +18,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ruby
           bundler-cache: true
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Release Gem
         uses: rubygems/release-gem@v1
