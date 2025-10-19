@@ -1,5 +1,6 @@
 <%
-  element_name ||= "span"
-  attributes ||= {}
+  element_name ||= locals[:element_name] || "span"
+  diff_time = locals[:diff_time]
+  attributes ||= locals[:attributes] || {}
 %>
 <%= content_tag(element_name.to_sym, diff_time, attributes) %>
