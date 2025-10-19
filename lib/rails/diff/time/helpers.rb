@@ -19,21 +19,24 @@ module Rails
           diff = certain_time - now
           difference_in_seconds = diff.abs
 
+          # Display "now" if within 5 seconds
+          return "now" if difference_in_seconds <= 5
+
           case difference_in_seconds
           when year_threshold..Float::INFINITY
-            format_years(difference_in_seconds, diff)
+            format_years difference_in_seconds, diff
           when month_threshold...year_threshold
-            format_months(difference_in_seconds, diff)
+            format_months difference_in_seconds, diff
           when week_threshold...month_threshold
-            format_weeks(difference_in_seconds, diff)
+            format_weeks difference_in_seconds, diff
           when day_threshold...week_threshold
-            format_days(difference_in_seconds, diff)
+            format_days difference_in_seconds, diff
           when hour_threshold...day_threshold
-            format_hours(difference_in_seconds, diff)
+            format_hours difference_in_seconds, diff
           when minute_threshold...hour_threshold
-            format_minutes(difference_in_seconds, diff)
+            format_minutes difference_in_seconds, diff
           else
-            format_seconds(difference_in_seconds, diff)
+            format_seconds difference_in_seconds, diff
           end
         end
 

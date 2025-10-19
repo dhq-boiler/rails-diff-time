@@ -148,15 +148,35 @@ RSpec.describe Rails::Diff::Time::Helpers do
     end
 
     context "edge cases" do
-      it "handles exactly now" do
+      it "shows 'now' for time differences within 5 seconds (future)" do
+        certain_time = now + 3 # 3 seconds later
+        expect(helper.send(:diff_time_str, certain_time)).to eq("now")
+      end
+
+      it "shows 'now' for time differences within 5 seconds (past)" do
+        certain_time = now - 4 # 4 seconds ago
+        expect(helper.send(:diff_time_str, certain_time)).to eq("now")
+      end
+
+      it "shows 'now' for exactly 5 seconds difference" do
+        certain_time = now + 5 # exactly 5 seconds later
+        expect(helper.send(:diff_time_str, certain_time)).to eq("now")
+      end
+
+      it "shows 'now' for exactly now" do
         certain_time = now
-        expect(helper.send(:diff_time_str, certain_time)).to eq("0 seconds later")
+        expect(helper.send(:diff_time_str, certain_time)).to eq("now")
+      end
+
+      it "shows seconds for time differences over 5 seconds" do
+        certain_time = now + 6 # 6 seconds later
+        expect(helper.send(:diff_time_str, certain_time)).to eq("6 seconds later")
       end
 
       it "handles pluralization correctly" do
-        # 複数形のテスト（このプロジェクト固有のロジック）
-        certain_time = now + 2 # 2秒後
-        expect(helper.send(:diff_time_str, certain_time)).to eq("2 seconds later")
+        # Test for pluralization (project-specific logic)
+        certain_time = now + 10 # 10 seconds later
+        expect(helper.send(:diff_time_str, certain_time)).to eq("10 seconds later")
       end
     end
   end
