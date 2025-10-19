@@ -3,6 +3,16 @@
 module Rails
   module Diff
     module Time
+      # Helper methods for displaying time differences in a human-readable format.
+      #
+      # This module provides methods to format time differences as relative strings
+      # (e.g., "2 hours ago", "3 days later") and integrates with Rails views.
+      # The helpers can be used directly in templates or through the provided
+      # render helper method.
+      #
+      # @example Usage in a Rails view
+      #   <%= diff_time(user.created_at) %>
+      #   <%= diff_time(event.start_time, "div", class: "timestamp") %>
       module Helpers
         def diff_time(certain_time, element_name = "span", attributes = {})
           render "rails-diff-time/diff_time", locals: {
@@ -97,7 +107,7 @@ module Rails
           minutes = (difference_in_seconds / minute_in_seconds).floor
           remaining_seconds = difference_in_seconds - (minutes * minute_in_seconds)
 
-          if remaining_seconds > 0
+          if remaining_seconds.positive?
             seconds = remaining_seconds.floor
             "#{time_str(minutes, "minute")} #{time_str(seconds, "second")} #{ago_or_later(diff)}"
           else
@@ -110,13 +120,13 @@ module Rails
           "#{time_str(seconds, "second")} #{ago_or_later(diff)}"
         end
 
-        # 時間単位の定数メソッド
+        # Time unit constant methods
         def year_in_seconds
-          365.25 * 24 * 3600  # うるう年考慮
+          365.25 * 24 * 3600 # Considering leap years
         end
 
         def month_in_seconds
-          30 * 24 * 3600  # 平均30日
+          30 * 24 * 3600 # Average 30 days
         end
 
         def week_in_seconds
@@ -135,7 +145,7 @@ module Rails
           60
         end
 
-        # 閾値メソッド
+        # Threshold methods
         def year_threshold
           year_in_seconds
         end

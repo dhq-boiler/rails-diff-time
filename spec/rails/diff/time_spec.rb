@@ -9,13 +9,13 @@ RSpec.describe Rails::Diff::Time do
 end
 
 RSpec.describe Rails::Diff::Time::Helpers do
-  # テスト用のダミークラスを作成
+  # Create a dummy class for testing
   let(:test_class) do
     Class.new do
       include Rails::Diff::Time::Helpers
 
-      # renderメソッドをモック
-      def render(template, locals:)
+      # Mock the render method
+      def render(_template, locals:)
         "#{locals[:element_name]}: #{locals[:diff_time]}"
       end
     end
@@ -30,7 +30,7 @@ RSpec.describe Rails::Diff::Time::Helpers do
 
   describe "#diff_time" do
     it "renders the diff_time partial with correct locals" do
-      certain_time = now + 3600 # 1時間後
+      certain_time = now + 3600 # 1 hour later
       result = helper.diff_time(certain_time)
       expect(result).to eq("span: 1 hour later")
     end
@@ -45,104 +45,104 @@ RSpec.describe Rails::Diff::Time::Helpers do
   describe "#diff_time_str" do
     context "when time is in the future" do
       it "shows seconds later" do
-        certain_time = now + 30 # 30秒後
+        certain_time = now + 30 # 30 seconds later
         expect(helper.send(:diff_time_str, certain_time)).to eq("30 seconds later")
       end
 
-      it "shows 1 second later (singular)" do
-        certain_time = now + 1 # 1秒後
-        expect(helper.send(:diff_time_str, certain_time)).to eq("1 second later")
+      it "shows 'now' for 1 second later (within 5 second threshold)" do
+        certain_time = now + 1 # 1 second later
+        expect(helper.send(:diff_time_str, certain_time)).to eq("now")
       end
 
       it "shows minutes and seconds later" do
-        certain_time = now + 90 # 1分30秒後
+        certain_time = now + 90 # 1 minute 30 seconds later
         expect(helper.send(:diff_time_str, certain_time)).to eq("1 minute 30 seconds later")
       end
 
       it "shows minutes later (no remaining seconds)" do
-        certain_time = now + 120 # 2分後
+        certain_time = now + 120 # 2 minutes later
         expect(helper.send(:diff_time_str, certain_time)).to eq("2 minutes later")
       end
 
       it "shows hours and minutes later" do
-        certain_time = now + 3900 # 1時間5分後
+        certain_time = now + 3900 # 1 hour 5 minutes later
         expect(helper.send(:diff_time_str, certain_time)).to eq("1 hour 5 minutes later")
       end
 
       it "shows hours later (no remaining minutes)" do
-        certain_time = now + 7200 # 2時間後
+        certain_time = now + 7200 # 2 hours later
         expect(helper.send(:diff_time_str, certain_time)).to eq("2 hours later")
       end
 
       it "shows days later" do
-        certain_time = now + 86400 # 1日後
+        certain_time = now + 86_400 # 1 day later
         expect(helper.send(:diff_time_str, certain_time)).to eq("1 day later")
       end
 
       it "shows weeks later" do
-        certain_time = now + 604800 # 1週間後
+        certain_time = now + 604_800 # 1 week later
         expect(helper.send(:diff_time_str, certain_time)).to eq("1 week later")
       end
 
       it "shows months and days later" do
-        certain_time = now + 2678400 # 31日後（1ヶ月と1日）
+        certain_time = now + 2_678_400 # 31 days later (1 month and 1 day)
         expect(helper.send(:diff_time_str, certain_time)).to eq("1 month 1 day later")
       end
 
       it "shows months later (no remaining days)" do
-        certain_time = now + 2592000 # 30日後（1ヶ月）
+        certain_time = now + 2_592_000 # 30 days later (1 month)
         expect(helper.send(:diff_time_str, certain_time)).to eq("1 month later")
       end
 
       it "shows years later" do
-        certain_time = now + 31557600 # 1年後（365.25日）
+        certain_time = now + 31_557_600 # 1 year later (365.25 days)
         expect(helper.send(:diff_time_str, certain_time)).to eq("1 year later")
       end
 
       it "shows years, months, and days later" do
-        certain_time = now + (365.25 * 24 * 3600) + (30 * 24 * 3600) + (24 * 3600) # 1年1ヶ月1日後
+        certain_time = now + (365.25 * 24 * 3600) + (30 * 24 * 3600) + (24 * 3600) # 1 year 1 month 1 day later
         expect(helper.send(:diff_time_str, certain_time)).to eq("1 year 1 month 1 day later")
       end
     end
 
     context "when time is in the past" do
       it "shows seconds ago" do
-        certain_time = now - 30 # 30秒前
+        certain_time = now - 30 # 30 seconds ago
         expect(helper.send(:diff_time_str, certain_time)).to eq("30 seconds ago")
       end
 
-      it "shows 1 second ago (singular)" do
-        certain_time = now - 1 # 1秒前
-        expect(helper.send(:diff_time_str, certain_time)).to eq("1 second ago")
+      it "shows 'now' for 1 second ago (within 5 second threshold)" do
+        certain_time = now - 1 # 1 second ago
+        expect(helper.send(:diff_time_str, certain_time)).to eq("now")
       end
 
       it "shows minutes and seconds ago" do
-        certain_time = now - 90 # 1分30秒前
+        certain_time = now - 90 # 1 minute 30 seconds ago
         expect(helper.send(:diff_time_str, certain_time)).to eq("1 minute 30 seconds ago")
       end
 
       it "shows hours ago" do
-        certain_time = now - 3600 # 1時間前
+        certain_time = now - 3600 # 1 hour ago
         expect(helper.send(:diff_time_str, certain_time)).to eq("1 hour ago")
       end
 
       it "shows days ago" do
-        certain_time = now - 86400 # 1日前
+        certain_time = now - 86_400 # 1 day ago
         expect(helper.send(:diff_time_str, certain_time)).to eq("1 day ago")
       end
 
       it "shows weeks ago" do
-        certain_time = now - 604800 # 1週間前
+        certain_time = now - 604_800 # 1 week ago
         expect(helper.send(:diff_time_str, certain_time)).to eq("1 week ago")
       end
 
       it "shows months ago" do
-        certain_time = now - 2592000 # 1ヶ月前
+        certain_time = now - 2_592_000 # 1 month ago
         expect(helper.send(:diff_time_str, certain_time)).to eq("1 month ago")
       end
 
       it "shows years ago" do
-        certain_time = now - 31557600 # 1年前
+        certain_time = now - 31_557_600 # 1 year ago
         expect(helper.send(:diff_time_str, certain_time)).to eq("1 year ago")
       end
     end
@@ -248,38 +248,38 @@ RSpec.describe Rails::Diff::Time::Helpers do
 
     describe "#format_days" do
       it "formats days correctly" do
-        result = helper.send(:format_days, 172800, diff_future)
+        result = helper.send(:format_days, 172_800, diff_future)
         expect(result).to eq("2 days later")
       end
     end
 
     describe "#format_weeks" do
       it "formats weeks correctly" do
-        result = helper.send(:format_weeks, 1209600, diff_future)
+        result = helper.send(:format_weeks, 1_209_600, diff_future)
         expect(result).to eq("2 weeks later")
       end
     end
 
     describe "#format_months" do
       it "formats months only" do
-        result = helper.send(:format_months, 5184000, diff_future)
+        result = helper.send(:format_months, 5_184_000, diff_future)
         expect(result).to eq("2 months later")
       end
 
       it "formats months with remaining days" do
-        result = helper.send(:format_months, 5270400, diff_future)
+        result = helper.send(:format_months, 5_270_400, diff_future)
         expect(result).to eq("2 months 1 day later")
       end
     end
 
     describe "#format_years" do
       it "formats years only" do
-        result = helper.send(:format_years, 63115200, diff_future)
+        result = helper.send(:format_years, 63_115_200, diff_future)
         expect(result).to eq("2 years later")
       end
 
       it "formats years with months and days" do
-        # 2年 + 1ヶ月 + 1日
+        # 2 years + 1 month + 1 day
         seconds = (2 * 365.25 * 24 * 3600) + (30 * 24 * 3600) + (24 * 3600)
         result = helper.send(:format_years, seconds, diff_future)
         expect(result).to eq("2 years 1 month 1 day later")

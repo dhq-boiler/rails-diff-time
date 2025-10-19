@@ -5,15 +5,15 @@ require "active_support"
 require "active_support/inflector"
 require "action_view"
 
-# Railsエンジンの部分を条件付きで読み込み
+# Conditionally load Rails engine parts
 begin
   require "rails/engine"
 rescue LoadError
-  # Rails::Engineが利用できない場合は警告を出すか、スキップする
+  # Show warning or skip if Rails::Engine is not available
   puts "Warning: Rails::Engine not available in test environment"
 end
 
-# テスト用に必要な部分のみ読み込み
+# Load only the necessary parts for testing
 require_relative "../lib/rails/diff/time/version"
 require_relative "../lib/rails/diff/time/helpers"
 
