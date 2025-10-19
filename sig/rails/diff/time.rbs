@@ -1,8 +1,38 @@
-module Rails
-  module Diff
-    module Time
-      VERSION: String
-      # See the writing guide of rbs: https://github.com/ruby/rbs#guides
-    end
+module RailsDiffTime
+  VERSION: String
+
+  module Helpers
+    def diff_time: (Time certain_time, ?String element_name, ?Hash[Symbol, untyped] attributes) -> String
+
+    private
+
+    def diff_time_str: (Time certain_time) -> String
+    def format_years: (Float difference_in_seconds, Float diff) -> String
+    def format_months: (Float difference_in_seconds, Float diff) -> String
+    def format_weeks: (Float difference_in_seconds, Float diff) -> String
+    def format_days: (Float difference_in_seconds, Float diff) -> String
+    def format_hours: (Float difference_in_seconds, Float diff) -> String
+    def format_minutes: (Float difference_in_seconds, Float diff) -> String
+    def format_seconds: (Float difference_in_seconds, Float diff) -> String
+    def year_in_seconds: () -> Float
+    def month_in_seconds: () -> Float
+    def week_in_seconds: () -> Float
+    def day_in_seconds: () -> Float
+    def hour_in_seconds: () -> Float
+    def minute_in_seconds: () -> Float
+    def year_threshold: () -> Float
+    def month_threshold: () -> Float
+    def week_threshold: () -> Float
+    def day_threshold: () -> Float
+    def hour_threshold: () -> Float
+    def minute_threshold: () -> Float
+    def ago_or_later: (Float diff_seconds) -> String
+    def time_str: (Integer count, String singular) -> String
+  end
+
+  class Error < StandardError
+  end
+
+  class Engine < Rails::Engine
   end
 end

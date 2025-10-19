@@ -4,21 +4,21 @@ require_relative "lib/rails/diff/time/version"
 
 Gem::Specification.new do |spec|
   spec.name = "rails-diff-time"
-  spec.version = Rails::Diff::Time::VERSION
+  spec.version = RailsDiffTime::VERSION
   spec.authors = ["dhq_boiler"]
   spec.email = ["dhq_boiler@live.jp"]
 
-  spec.summary = "TODO: Write a short summary, because RubyGems requires one."
-  spec.description = "TODO: Write a longer description or delete this line."
-  spec.homepage = "TODO: Put your gem's website or public repo URL here."
+  spec.summary = "Rails helper for displaying human-readable time differences"
+  spec.description = "A Rails gem that provides helper methods to display time differences in a human-readable format (e.g., '2 hours ago', '3 days later'). Integrates seamlessly with Rails views and supports various time units from seconds to years."
+  spec.homepage = "https://github.com/dhq-boiler/rails-diff-time"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.4.5"
 
-  spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
+  # spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "TODO: Put your gem's public repo URL here."
-  spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
+  spec.metadata["source_code_uri"] = spec.homepage
+  # spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
   spec.metadata["rubygems_mfa_required"] = "true"
 
   # Specify which files should be added to the gem when it is released.

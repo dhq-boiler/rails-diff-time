@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-module Rails
-  module Diff
-    module Time
-      VERSION = "0.1.0"
-    end
-  end
+module RailsDiffTime
+  VERSION = "0.1.0"
 end

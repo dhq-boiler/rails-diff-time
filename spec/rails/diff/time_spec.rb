@@ -2,17 +2,17 @@
 
 require "spec_helper"
 
-RSpec.describe Rails::Diff::Time do
+RSpec.describe RailsDiffTime do
   it "has a version number" do
-    expect(Rails::Diff::Time::VERSION).not_to be nil
+    expect(RailsDiffTime::VERSION).not_to be nil
   end
 end
 
-RSpec.describe Rails::Diff::Time::Helpers do
+RSpec.describe RailsDiffTime::Helpers do
   # Create a dummy class for testing
   let(:test_class) do
     Class.new do
-      include Rails::Diff::Time::Helpers
+      include RailsDiffTime::Helpers
 
       # Mock the render method
       def render(_template, locals:)
