@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rails-diff-time (0.1.2)
+    rails-diff-time (0.1.3)
 
 GEM
   remote: https://rubygems.org/
