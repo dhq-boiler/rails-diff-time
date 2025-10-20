@@ -3,4 +3,6 @@
   _diff_time = locals[:diff_time]
   _attributes ||= locals[:attributes] || {}
 %>
-<%= content_tag(_element_name.to_sym, _diff_time, _attributes) %>
+<% if _diff_time %>
+  <%= content_tag(_element_name.to_sym, _diff_time, _attributes) %>
+<% end %>
