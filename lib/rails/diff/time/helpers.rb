@@ -13,6 +13,8 @@ module RailsDiffTime
   #   <%= diff_time(event.start_time, "div", class: "timestamp") %>
   module Helpers
     def diff_time(certain_time, element_name = "span", attributes = {})
+      return "" if certain_time.nil?
+
       render "rails-diff-time/diff_time", locals: {
         diff_time: diff_time_str(certain_time),
         element_name: element_name,
