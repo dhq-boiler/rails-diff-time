@@ -1,8 +1,14 @@
 <%
-  _element_name ||= locals[:element_name] || "span"
-  _diff_time = locals[:diff_time]
-  _attributes ||= locals[:attributes] || {}
+  element_name ||= locals[:element_name] || "span"
+  diff_time = locals[:diff_time]
+  attributes ||= locals[:attributes] || {}
+  certain_time = locals[:certain_time]
+  auto_update = locals[:auto_update]
+
+  if auto_update
+    attributes[:data] ||= {}
+    attributes[:data][:diff_time_target] = "display"
+    attributes[:data][:certain_time] = certain_time.iso8601
+  end
 %>
-<% if _diff_time %>
-  <%= content_tag(_element_name.to_sym, _diff_time, _attributes) %>
-<% end %>
+<%= content_tag(element_name.to_sym, diff_time, attributes) %>
