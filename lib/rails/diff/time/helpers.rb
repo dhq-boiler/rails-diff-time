@@ -17,7 +17,7 @@ module RailsDiffTime
       # If auto_update is enabled and the script has not been included yet
       if auto_update && !@_diff_time_script_included
         @_diff_time_script_included = true
-        result = result + diff_time_script_tag
+        result += diff_time_script_tag
       end
 
       result
@@ -30,36 +30,36 @@ module RailsDiffTime
         <<~JAVASCRIPT.html_safe
           (function() {
             'use strict';
-            
+
             class DiffTimeUpdater {
               constructor() {
                 this.updateInterval = 60000;
                 this.elements = [];
                 this.timerId = null;
               }
-              
+
               init() {
                 this.findElements();
                 if (this.elements.length > 0) {
                   this.startAutoUpdate();
                 }
               }
-              
+
               findElements() {
                 this.elements = Array.from(
                   document.querySelectorAll('[data-diff-time-target="display"]')
                 );
               }
-              
+
               startAutoUpdate() {
                 if (this.timerId) clearInterval(this.timerId);
                 this.timerId = setInterval(() => this.updateAll(), this.updateInterval);
               }
-              
+
               updateAll() {
                 this.elements.forEach(element => this.updateElement(element));
               }
-              
+
               updateElement(element) {
                 const certainTimeStr = element.dataset.certainTime;
                 if (!certainTimeStr) return;
@@ -67,16 +67,16 @@ module RailsDiffTime
                 const diffTimeStr = this.calculateDiffTime(certainTime);
                 element.textContent = diffTimeStr;
               }
-              
+
               calculateDiffTime(certainTime) {
                 const now = new Date();
                 const diff = certainTime - now;
                 const differenceInSeconds = Math.abs(diff) / 1000;
-                
+
                 if (differenceInSeconds <= 5) return "now";
-                
+
                 const isLater = diff > 0;
-                
+
                 if (differenceInSeconds >= this.yearInSeconds()) {
                   return this.formatYears(differenceInSeconds, isLater);
                 } else if (differenceInSeconds >= this.monthInSeconds()) {
@@ -93,17 +93,17 @@ module RailsDiffTime
                   return this.formatSeconds(differenceInSeconds, isLater);
                 }
               }
-              
+
               formatYears(seconds, isLater) {
                 const years = Math.floor(seconds / this.yearInSeconds());
                 let remaining = seconds - (years * this.yearInSeconds());
                 let result = this.timeStr(years, "year");
-                
+
                 if (remaining >= this.monthInSeconds()) {
                   const months = Math.floor(remaining / this.monthInSeconds());
                   remaining -= months * this.monthInSeconds();
                   result += ` ${this.timeStr(months, "month")}`;
-                  
+
                   if (remaining >= this.dayInSeconds()) {
                     const days = Math.floor(remaining / this.dayInSeconds());
                     result += ` ${this.timeStr(days, "day")}`;
@@ -111,72 +111,72 @@ module RailsDiffTime
                 }
                 return `${result} ${this.agoOrLater(isLater)}`;
               }
-              
+
               formatMonths(seconds, isLater) {
                 const months = Math.floor(seconds / this.monthInSeconds());
                 const remaining = seconds - (months * this.monthInSeconds());
                 let result = this.timeStr(months, "month");
-                
+
                 if (remaining >= this.dayInSeconds()) {
                   const days = Math.floor(remaining / this.dayInSeconds());
                   result += ` ${this.timeStr(days, "day")}`;
                 }
                 return `${result} ${this.agoOrLater(isLater)}`;
               }
-              
+
               formatWeeks(seconds, isLater) {
                 const weeks = Math.floor(seconds / this.weekInSeconds());
                 return `${this.timeStr(weeks, "week")} ${this.agoOrLater(isLater)}`;
               }
-              
+
               formatDays(seconds, isLater) {
                 const days = Math.floor(seconds / this.dayInSeconds());
                 return `${this.timeStr(days, "day")} ${this.agoOrLater(isLater)}`;
               }
-              
+
               formatHours(seconds, isLater) {
                 const hours = Math.floor(seconds / this.hourInSeconds());
                 const remaining = seconds - (hours * this.hourInSeconds());
                 let result = this.timeStr(hours, "hour");
-                
+
                 if (remaining >= this.minuteInSeconds()) {
                   const minutes = Math.floor(remaining / this.minuteInSeconds());
                   result += ` ${this.timeStr(minutes, "minute")}`;
                 }
                 return `${result} ${this.agoOrLater(isLater)}`;
               }
-              
+
               formatMinutes(seconds, isLater) {
                 const minutes = Math.floor(seconds / this.minuteInSeconds());
                 const remaining = seconds - (minutes * this.minuteInSeconds());
                 let result = this.timeStr(minutes, "minute");
-                
+
                 if (remaining > 0) {
                   const secs = Math.floor(remaining);
                   result += ` ${this.timeStr(secs, "second")}`;
                 }
                 return `${result} ${this.agoOrLater(isLater)}`;
               }
-              
+
               formatSeconds(seconds, isLater) {
                 const secs = Math.floor(seconds);
                 return `${this.timeStr(secs, "second")} ${this.agoOrLater(isLater)}`;
               }
-              
+
               yearInSeconds() { return 365.25 * 24 * 3600; }
               monthInSeconds() { return 30 * 24 * 3600; }
               weekInSeconds() { return 7 * 24 * 3600; }
               dayInSeconds() { return 24 * 3600; }
               hourInSeconds() { return 3600; }
               minuteInSeconds() { return 60; }
-              
+
               agoOrLater(isLater) { return isLater ? "later" : "ago"; }
-              
+
               timeStr(count, singular) {
                 const plural = singular + "s";
                 return `${count} ${count === 1 ? singular : plural}`;
               }
-              
+
               destroy() {
                 if (this.timerId) {
                   clearInterval(this.timerId);
@@ -185,32 +185,32 @@ module RailsDiffTime
                 this.elements = [];
               }
             }
-            
+
             let updater = null;
-            
+
             function initUpdater() {
               if (updater) updater.destroy();
               updater = new DiffTimeUpdater();
               updater.init();
             }
-            
+
             if (document.readyState === 'loading') {
               document.addEventListener('DOMContentLoaded', initUpdater);
             } else {
               initUpdater();
             }
-            
+
             document.addEventListener('turbolinks:load', initUpdater);
             document.addEventListener('turbo:load', initUpdater);
-            
+
             document.addEventListener('turbolinks:before-cache', function() {
               if (updater) updater.destroy();
             });
-            
+
             document.addEventListener('turbo:before-cache', function() {
               if (updater) updater.destroy();
             });
-            
+
             window.RailsDiffTime = {
               updater: updater,
               DiffTimeUpdater: DiffTimeUpdater
@@ -372,4 +372,3 @@ module RailsDiffTime
     end
   end
 end
-

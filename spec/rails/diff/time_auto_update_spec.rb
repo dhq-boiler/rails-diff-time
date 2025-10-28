@@ -23,7 +23,7 @@ RSpec.describe "RailsDiffTime Auto-update Feature" do
 
         attrs_str = attributes.map do |key, value|
           if key == :data
-            value.map { |k, v| "data-#{k.to_s.tr('_', '-')}=\"#{v}\"" }.join(" ")
+            value.map { |k, v| "data-#{k.to_s.tr("_", "-")}=\"#{v}\"" }.join(" ")
           else
             "#{key}=\"#{value}\""
           end
@@ -98,12 +98,12 @@ RSpec.describe "RailsDiffTime Auto-update Feature" do
     context "when auto_update is false or not specified" do
       it "does not include data-diff-time-target attribute" do
         result = helper.diff_time(certain_time, "span", {})
-        expect(result).not_to include('data-diff-time-target')
+        expect(result).not_to include("data-diff-time-target")
       end
 
       it "does not include data-certain-time attribute" do
         result = helper.diff_time(certain_time, "span", {}, auto_update: false)
-        expect(result).not_to include('data-certain-time')
+        expect(result).not_to include("data-certain-time")
       end
 
       it "does not include JavaScript" do
@@ -135,7 +135,7 @@ RSpec.describe "RailsDiffTime Auto-update Feature" do
     it "uses ISO8601 format for timestamp" do
       result = helper.diff_time(certain_time, "span", {}, auto_update: true)
       # ISO8601 format should include date, time, and timezone
-      expect(result).to match(/data-certain-time="[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}/)
+      expect(result).to match(/data-certain-time="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)
     end
 
     it "works with past times" do
