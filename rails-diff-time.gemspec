@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = "A Rails gem that provides helper methods to display time differences in a human-readable format (e.g., '2 hours ago', '3 days later'). Features include auto-updating timestamps every minute without page reload, no JavaScript imports required, and seamless integration with Rails views. Supports various time units from seconds to years."
   spec.homepage = "https://github.com/dhq-boiler/rails-diff-time"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.4.5"
+  spec.required_ruby_version = ">= 3.4.7"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
