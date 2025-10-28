@@ -7,6 +7,7 @@ Style/StringLiterals:
 
 Style/StringLiteralsInInterpolation:
   EnforcedStyle: double_quotes
+  AutoCorrect: false
 
 # メトリクス系のルールをオプトアウト
 Metrics/ModuleLength:
